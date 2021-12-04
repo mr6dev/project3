@@ -1,32 +1,44 @@
 import React, { Component } from 'react';
 
 class Counter extends Component {
-  state = {
-    count: 0,
-  };
+  formatCount() {
+    const { value } = this.props;
+    return value === 0 ? 'Zero' : value;
+  }
 
-  handlerAdd = () => {
-    this.setState({ count: this.state.count + 1 });
-  };
-
-  modifyCount = () => {
-    const { count } = this.state;
-    return count === 0 ? 'Zero' : count;
-  };
-
-  getStyleClasses = () => {
-    let classes = 'badge badge-pill m-2 badge-';
-    classes += this.state.count === 0 ? 'warning' : 'primary';
+  modifyColorBadge() {
+    let classes = 'badge  badge-sm ml-2 badge-';
+    classes += this.props.counters.value === 0 ? 'warning' : 'info';
     return classes;
-  };
-
+  }
   render() {
     return (
-      <div>
-        <span className={this.getStyleClasses()}>{this.modifyCount()}</span>
-        <button onClick={this.handlerAdd} className='btn btn-info btn-lg'>
-          add product{' '}
-        </button>
+      <div className='row'>
+        <div className='col-1'>
+          <span className={this.modifyColorBadge()}>{this.formatCount()}</span>
+        </div>
+
+        <div className='col'>
+          <button
+            onClick={() => this.props.onIncrement(this.props.counters)}
+            className='btn btn-secondary btn-sm m-2 '
+          >
+            +
+          </button>
+          <button
+            onClick={() => this.props.onDecrement(this.props.counters)}
+            className='btn btn-secondary btn-sm m-2'
+            disabled={this.props.counters.value === 0 ? 'disabled' : ''}
+          >
+            -
+          </button>
+          <button
+            onClick={() => this.props.onDelete(this.props.counters)}
+            className='btn btn-danger btn-sm m-2'
+          >
+            Delete
+          </button>
+        </div>
       </div>
     );
   }
